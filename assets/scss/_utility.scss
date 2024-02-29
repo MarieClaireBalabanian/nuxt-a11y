@@ -1,0 +1,136 @@
+$header-height: 45px;
+
+.grid {
+    display: grid;
+    grid-gap: 20px;
+}
+
+// @media (min-width: 768px) {
+@for $i from 1 through 5 {
+    .grid-#{$i} {
+        grid-template-columns: repeat($i, minmax(0, #{$i}fr));
+    }
+}
+
+// }
+
+.absolute-cover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+}
+
+.m-auto {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.mright-auto {
+    margin-right: auto;
+}
+
+.mleft-auto {
+    margin-left: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+
+.mobile-only {
+    @media (min-width: 768px) {
+        display: none;
+    }
+}
+
+.desktop-only {
+    @media (max-width: 767px) {
+        display: none;
+    }
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mb-40 {
+    margin-bottom: 20px;
+
+    @media (min-width: 768px) {
+        margin-bottom: 40px;
+    }
+}
+
+.mb-80 {
+    margin-bottom: 40px;
+
+    @media (min-width: 768px) {
+        margin-bottom: 80px;
+    }
+}
+
+.flex-align-center {
+    display: flex;
+    align-items: center;
+
+    &.wrap {
+        flex-wrap: wrap;
+    }
+}
+
+.bg-black {
+    background: $black;
+    color: $white;
+}
+
+.bg-white {
+    background: $white;
+}
+
+%pseudo {
+    display: block;
+    content: '';
+    position: absolute;
+}
+
+.pseudo-before-after {
+    position: relative;
+    &::before, &::after {
+        @extend %pseudo;
+    }
+}
+
+.pseudo-before {
+    position: relative;
+    &::before {
+        @extend %pseudo;
+    }   
+}
+
+.pseudo-after {
+    position: relative;
+    &::after {
+        @extend %pseudo;
+    }   
+}
+
+
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+

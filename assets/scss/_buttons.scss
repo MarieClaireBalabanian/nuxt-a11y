@@ -1,0 +1,27 @@
+button {
+    border-radius: 0;
+    border: 0;
+    background: transparent;
+    display: inline-block;
+    padding: 0;
+}
+
+.button {
+    font-size: .9rem;
+    font-weight: 600;
+    padding: .6rem .8rem .5rem;
+    display: inline-block;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    background: $white;
+    color: $black;
+    transition:  .25s ease;
+    background-color: $rose;
+    color: $white;
+    &:hover,
+    &:focus {
+        text-decoration: underline;
+        border-radius: .5em;
+    }
+}
