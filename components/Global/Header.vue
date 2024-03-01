@@ -1,13 +1,9 @@
 <template>
-  <header
-    class="global-header"
-    :class="{ open: open, bg: showBg }"
-    id="header"
-  >
+  <header class="global-header" :class="{ open: open }">
     <div class="container">
       <UtilityFocusLock :enabled="open" class="trap-wrapper">
         <nav
-          class="items-container"
+          class="primary-navigation"
           @keyup.esc="closeNav('esc')"
           aria-label="Main Navigation"
         >
@@ -16,7 +12,6 @@
           </NuxtLink>
           <div class="button-wrapper mobile-only">
             <button
-              id="menu-toggle"
               aria-haspopup="true"
               class="hamburger"
               ref="hamburgerRef"
@@ -58,18 +53,7 @@
             </button>
           </div>
 
-          <div class="items-wrapper">
-            <div class="inner-menu"
-            >
-              <ul class="items" aria-label="Expanded Navigation">
-                <li v-for="(item, index) in menu" :key="`nav-${index}`">
-                  <a :href="`/#${item.slug}`" ref="linkRef" @click="hideNav">
-                    {{ item.title }}
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
+       
         </nav>
       </UtilityFocusLock>
     </div>
@@ -77,23 +61,10 @@
 </template>
 
 <script setup>
-import { scrollTo } from "@/composables/scrollTo.js";
-// import { useWindowStore } from "@/stores/window";
-
 const route = useRoute();
-console.log(route);
 
 const linkRef = ref([]);
 const hamburgerRef = ref(null);
-const isDesktop = ref(null);
-
-const hasNav = computed(() => {
-  return isDesktop.value;
-});
-
-const showBg = computed(() => {
-  return true;
-});
 
 const menu = [
   {
@@ -119,15 +90,6 @@ const menu = [
 
 const open = ref(false);
 
-watchEffect(() => {
-  // if (isDesktop?.value) {
-  //   open.value = true;
-  //   document.body.classList.remove("lock-scroll");
-  // } else {
-  //   open.value = false;
-  // }
-});
-
 const toggleNav = () => {
   if (open.value) closeNav();
   else openNav();
@@ -152,14 +114,9 @@ const closeNav = (action) => {
   }
 };
 
-const hideNav = () => {
-  if (!isDesktop.value) {
-    closeNav();
-  }
-};
-
-const resize = () => {
-  isDesktop.value = window.innerWidth;
+const hideNav = (action) => {
+  open.value = false;
+  document.body.classList.remove("lock-scroll");
 };
 
 const skipToContent = () => {
@@ -171,59 +128,50 @@ const hamburgerSR = computed(() => {
   return open.value ? "Close Navigation" : "Open Navigation";
 });
 
-onMounted(() => {
-  if (process.client) {
-    resize();
-    window.addEventListener("resize", resize);
-  }
-});
+onMounted(() => {});
 </script>
 
 <style lang="scss">
 .global-header {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   z-index: 999;
-  transition: 0.5s ease;
-  // font-family: $title;
 
   @media (min-width: 768px) {
-    // position: absolute;
+    position: static;
     padding-top: 30px;
   }
 
   @media (max-width: 767px) {
     > .container {
-      // height: $header-height;
+      height: $header-height;
       padding-top: 10px;
     }
   }
 
-  &.bg {
-    // background: $blue;
-    // box-shadow: 0 1px 5px rgba($bluegreen, 0.5);
-
-    .button-wrapper {
-      .bar {
-        // stroke: $cream;
-      }
-    }
-
-    .logo {
-      transition: 0.2s ease !important;
-      // color: $cream;
-      &:hover,
-      &:focus {
-      }
-    }
-  }
-
-
-  .button-wrapper {
+  .hamburger-wrapper {
     height: 22px;
     width: 22px;
     margin-left: auto;
+    .hamburger {
+      display: block;
+      z-index: 9;
+      position: relative;
+      width: 100%;
+      height: 100%;
+
+      svg {
+        display: inline-block;
+        width: 100%;
+      }
+
+      .bar {
+        transition: 0.2s ease;
+        // stroke: $rust;
+      }
+    }
   }
 
   .logo {
@@ -231,16 +179,6 @@ onMounted(() => {
     z-index: 5;
     font-size: 26px;
     line-height: 0.85em;
-
-    @media (max-width: 767px) {
-      padding-top: 4px;
-      font-size: 20px;
-    }
-
-    @media (max-width: 330px) {
-      padding-top: 4px;
-      font-size: 19px;
-    }
   }
 
   a {
@@ -251,25 +189,7 @@ onMounted(() => {
     font-size: 1em;
   }
 
-  .hamburger {
-    display: block;
-    z-index: 9;
-    position: relative;
-    width: 100%;
-    height: 100%;
-
-    svg {
-      display: inline-block;
-      width: 100%;
-    }
-
-    .bar {
-      transition: 0.2s ease;
-      // stroke: $rust;
-    }
-  }
-
-  .items-container {
+  .primary-navigation {
     width: 100%;
     -webkit-overflow-scrolling: touch;
     z-index: 9999;
@@ -289,67 +209,31 @@ onMounted(() => {
     right: 0;
     height: 100vh;
     overflow: auto;
-    // color: $cream;
     padding-top: $header-height;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    // background: $blue;
 
     ul {
-      padding: 90px 0 90px 4.5vw;
+      padding: 60px 20px;
     }
 
-    li {
-      @media (max-width: 767px) {
-        margin-bottom: 2em;
-
-        a {
-          &:hover,
-          &:focus {
-          }
-        }
-      }
-    }
 
     @media (min-width: 768px) {
       all: unset;
       margin-left: auto;
       justify-content: flex-end;
 
-      .container {
-        padding: 0;
-      }
       ul {
         padding: 0;
         display: flex;
       }
 
       li {
-        letter-spacing: 0.1rem;
         margin-bottom: 0;
-        + li {
-          margin-left: 50px;
-        }
       }
     }
   }
 
   &.open {
-    .logo,
-    &.bg .logo {
-      @media (max-width: 767px) {
-        &:hover,
-        &:focus {
-        }
-      }
-    }
-
-    .items-container {
-      pointer-events: auto;
-    }
-
-    .button-wrapper {
+    .hamburger-wrapper {
       .bar {
         &.bar-1 {
           transform: translate(4px, 1px) rotate(45deg);

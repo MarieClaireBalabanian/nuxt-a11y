@@ -38,6 +38,8 @@
 </template>
 
 <script setup>
+const { $event } = useNuxtApp();
+
 const props = defineProps({
   modalButtonText: {
     type: String,
@@ -53,21 +55,17 @@ watch(open, (newOpen) => {
   handleModal(newOpen);
 });
 
+
+// handle open/close consequences regarding body scroll behavior and focus management
 const handleModal = (val) => {
-  console.log("hi");
-  const app = document.getElementById("app");
+  let focusFollow;
   if (val) {
-    document.body.classList.add("lock-scroll");
-    app.setAttribute("aria-hidden", true);
-    nextTick(() => {
-      if (modalRef?.value) modalRef.value.focus();
-    });
+    $event('handleModalActive', true);
+    focusFollow = modalRef.value
   } else {
-    document.body.classList.remove("lock-scroll");
-    app.setAttribute("aria-hidden", false);
-    nextTick(() => {
-      if (triggerRef?.value) triggerRef.value.focus();
-    });
+    $event('handleModalActive', false);
+    focusFollow = triggerRef.value
+    nextTick(() => { focusFollow.focus() });
   }
   open.value = val;
 };

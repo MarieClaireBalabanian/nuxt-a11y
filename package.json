@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "mitt": "^3.0.1",
     "nuxt": "^3.10.2",
     "sass": "^1.71.0",
     "sass-loader": "^14.1.1",
