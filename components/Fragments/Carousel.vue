@@ -69,7 +69,6 @@ const slideRef = ref([]);
 
 // Carousel  Navigation Functions
 const navigate = (i) => {
-  if (i === currentIndex.value) return;
   currentIndex.value = i - 1;
   let scroll = Math.ceil(slideRef.value[0].clientWidth);
 

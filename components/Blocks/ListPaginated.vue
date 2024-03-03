@@ -5,7 +5,7 @@
 				<p class="">Sorry, no matches found!</p>
 			</div>
 			<ul class="results" ref="listRef" tabindex="-1">
-				<li v-for="(item, index) in posts" :key="`blog-card-${index}`" ref="resultRef">
+				<li v-for="(item, index) in posts" :key="`item-${index}`" ref="resultRef">
 					<a class="link" href="/">
 						Hello
 						<br />
@@ -49,26 +49,27 @@
 	const changePage = (val) => {
 		currentPage.value = val;
 		fetchPosts();
-		reset();
+		nextTick(() => {
+			reset();
+		})
 	};
 
 	const reset = () => {
-		const container = listRef?.value;
-		if (container) {
+		const firstItem = resultRef.value[0];
+		if (firstItem) {
 			window.scrollTo({
-				top: container.getBoundingClientRect().top + window.scrollY,
+				top: firstItem.getBoundingClientRect().top + window.scrollY,
 				left: 0,
 				behavior: 'smooth',
 			});
 		}
-		const firstItem = resultRef.value[0];
 		const focusable = firstItem.querySelector('.link');
 		if (focusable) {
 			focusable.focus({
 				preventScroll: true,
 			});
 		} else {
-			container.focus({
+			listRef.value.focus({
 				preventScroll: true,
 			});
 		}
