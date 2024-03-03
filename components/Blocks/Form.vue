@@ -1,52 +1,58 @@
 <template>
   <section>
     <div class="container">
-        <form @submit.prevent="submit" aria-label="Send us a mesage">
-          <Transition name="list">
-            <div
-              id="form-errors"
-              tabindex="-1"
-              class="form-errors mb-40"
-              v-if="srOnlyErrors.length"
-              aria-atomic="true"
-              aria-live="agressive"
-            >
-              <ol
-                class="text-red paragraph-small"
-                aria-label="Form Errors"
+      <form @submit.prevent="submit" aria-label="Send us a mesage">
+        <Transition name="list">
+          <div
+            id="form-errors"
+            tabindex="-1"
+            class="form-errors mb-40"
+            v-if="srOnlyErrors.length"
+            aria-atomic="true"
+            aria-live="agressive"
+          >
+            <ol class="text-red paragraph-small" aria-label="Form Errors">
+              <li
+                class="text-left"
+                v-for="(error, index) in srOnlyErrors"
+                :key="`error-${index}`"
               >
-                <li
-                  class="text-left"
-                  v-for="(error, index) in srOnlyErrors"
-                  :key="`error-${index}`"
-                >
-                  {{ index + 1 }}. {{ error }}
-                </li>
-              </ol>
-            </div>
-          </Transition>
+                {{ index + 1 }}. {{ error }}
+              </li>
+            </ol>
+          </div>
+        </Transition>
 
-          <div class="fields mb-40 m-auto">
-            <FragmentsFormsInput
-              v-model="formInputs.name.val"
-              :label="formInputs.name.label"
-              labelStyle="absolute"
-              :error="formInputs.name.errors"
-              name="name"
-              autocomplete="name"
-              required
-            />
-            <FragmentsFormsInput
-              v-model="formInputs.email.val"
-              :label="formInputs.email.label"
-              labelStyle="absolute"
-              :error="formInputs.email.errors"
-              name="email"
-              autocomplete="email"
-              required
-            />
+        <div class="fields mb-40 m-auto">
+          <FragmentsFormsInput
+            v-model="formInputs.name.val"
+            :label="formInputs.name.label"
+            labelStyle="absolute"
+            :error="formInputs.name.errors"
+            name="name"
+            autocomplete="name"
+            required
+          />
+          <FragmentsFormsInput
+            v-model="formInputs.email.val"
+            :label="formInputs.email.label"
+            labelStyle="absolute"
+            :error="formInputs.email.errors"
+            name="email"
+            autocomplete="email"
+            required
+          />
 
-            <FragmentsFormsInput
+          <!-- <FragmentsFormsInput
+              v-model="formInputs.message.val"
+              :label="formInputs.message.label"
+              labelStyle="absolute"
+              :error="formInputs.message.errors"
+              name="message"
+              inputType="textarea"
+              required
+            /> -->
+          <FragmentsFormsTextarea
               v-model="formInputs.message.val"
               :label="formInputs.message.label"
               labelStyle="absolute"
@@ -55,29 +61,37 @@
               inputType="textarea"
               required
             />
-          </div>
+          <FragmentsFormsSelect
+            v-model="formInputs.state.val"
+            :label="formInputs.state.label"
+            :error="formInputs.state.errors"
+            :options="stateOptions"
+            name="state"
+            required
+          />
+        </div>
 
-          <div class="actions text-center">
-            <button
-              type="submit"
-              :disabled="submitting"
-              ref="submitButton"
-              class="button"
-            >
-              {{ submitting ? "Submitting" : "Submit" }}
-            </button>
-          </div>
-          <p
-            v-if="success"
-            role="status"
-            class="success-message text-center text-white h3"
-            tabindex="-1"
-            ref="successMessageRef"
+        <div class="actions text-center">
+          <button
+            type="submit"
+            :disabled="submitting"
+            ref="submitButton"
+            class="button"
           >
-            Thanks for reaching out!
-          </p>
-        </form>
-      </div>
+            {{ submitting ? "Submitting" : "Submit" }}
+          </button>
+        </div>
+        <p
+          v-if="success"
+          role="status"
+          class="success-message text-center text-white h3"
+          tabindex="-1"
+          ref="successMessageRef"
+        >
+          Thanks for reaching out!
+        </p>
+      </form>
+    </div>
   </section>
 </template>
 
@@ -111,11 +125,23 @@ const formInputs = ref({
     validators: [validators.required],
     label: "Message",
   },
+  state: {
+    val: "",
+    errors: null,
+    validators: [validators.required],
+    label: "Select",
+  },
 });
 
 const submitting = ref(false);
 const success = ref(false);
 const successMessageRef = ref(null);
+
+const stateOptions = [
+  { name: "", value: "" },
+  { name: "Washington", value: "WA" },
+  { name: "Illinois", value: "IL" },
+];
 
 const validateForm = () => {
   let valid = true;
@@ -156,17 +182,15 @@ const submit = () => {
     success.value = false;
     submitting.value = false;
     nextTick(() => {
-      scrollTo('form-errors', 'smooth');
+      scrollTo("form-errors", "smooth");
     });
   }
 };
-
 </script>
 
 <style lang="scss">
-
 .block-form {
-	background: $green;
+  background: $green;
   .fields {
     grid-gap: 15px;
   }
