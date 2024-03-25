@@ -6,6 +6,9 @@
         "type": "Marquee"
     },
     {
+        "type": "SearchOverlay"
+    },
+    {
         "type": "Accordion",
         "items": [
             {

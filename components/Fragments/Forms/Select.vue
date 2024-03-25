@@ -1,5 +1,8 @@
 <template>
-  <div class="form-field select-container" :class="{ 'has-value': !!modelValue }">
+  <div
+    class="form-field select-container"
+    :class="{ 'has-value': !!modelValue }"
+  >
     <label :for="name" class="sr-only">{{ label }}</label>
     <select
       ref="select"
@@ -9,7 +12,6 @@
       :aria-describedby="error ? name + '-error' : null"
       :aria-required="required ? true : false.toString()"
       :aria-invalid="error ? true : null"
-
     >
       <option
         v-for="option in options"
@@ -66,17 +68,15 @@ const props = defineProps({
   options: {
     type: Array,
     required: true,
-  }
+  },
 });
 </script>
 
 <style lang="scss">
-  .form-field {
-    select {
-      background: $white;
-      color: $black;
-    }
+.form-field {
+  select {
+    background: $white;
+    color: $black;
   }
-
-
+}
 </style>

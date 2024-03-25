@@ -1,6 +1,6 @@
 <template>
   <div
-    class="form-field"
+    class="form-field iniput"
     :class="[
       { error: error, 'has-value': !!modelValue, focused: focused },
       inputType,
@@ -10,20 +10,7 @@
       {{ label }}<span v-if="required" aria-hidden="true">*</span>
     </label>
 
-    <textarea
-      v-if="inputType === 'textarea'"
-      ref="inputRef"
-      :value="modelValue"
-      @focus="focused = true"
-      @input="$emit('update:modelValue', $event.target.value)"
-      :aria-required="required.toString()"
-      :aria-invalid="error ? true : null"
-      :id="name"
-      :name="name"
-    />
-
     <input
-      v-else
       ref="inputRef"
       :type="inputType"
       :value="modelValue"
@@ -88,9 +75,13 @@ const props = defineProps({
 });
 
 const focused = ref(null);
-const inputRef = ref(null);
-const { focusOnMount, modelValue } = toRefs(props);
 
+const inputRef = ref(null);
+defineExpose({
+  inputRef
+})
+
+const { focusOnMount } = toRefs(props);
 onMounted(() => {
   if (process.client) {
     if (focusOnMount?.value) {
@@ -144,7 +135,6 @@ onMounted(() => {
       margin-bottom: 10px;
     }
     &.absolute {
-      background: white;
       transition: 0.25s ease;
       pointer-events: none;
       touch-action: none;

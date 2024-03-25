@@ -1,9 +1,8 @@
 <template>
   <div
-    class="form-field"
+    class="form-field "
     :class="[
-      { error: error, 'has-value': !!modelValue, focused: focused },
-      inputType,
+      { error: error, 'has-value': !!modelValue, focused: focused }, 'textarea'
     ]"
   >
     <label :for="name" :class="[{ 'sr-only': srOnlyLabel }, labelStyle]">
@@ -57,8 +56,6 @@ const props = defineProps({
 });
 
 const focused = ref(null);
-const inputRef = ref(null);
-
 
 </script>
 
