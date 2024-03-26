@@ -7,9 +7,8 @@
 			<ul class="results" ref="listRef" tabindex="-1">
 				<li v-for="(item, index) in posts" :key="`item-${index}`" ref="resultRef">
 					<a class="link" href="/">
-						Hello
+						I'm a post
 						<br />
-						Item # {{ index + currentPage }}
 					</a>
 				</li>
 			</ul>

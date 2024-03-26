@@ -1,9 +1,7 @@
 <template>
   <div
-    class="form-field "
-    :class="[
-      { error: error, 'has-value': !!modelValue, focused: focused }, 'textarea'
-    ]"
+    class="form-field textarea"
+    :class="{ error: error, 'has-value': !!modelValue, focused: focused }"
   >
     <label :for="name" :class="[{ 'sr-only': srOnlyLabel }, labelStyle]">
       {{ label }}<span v-if="required" aria-hidden="true">*</span>
@@ -47,7 +45,7 @@ const props = defineProps({
   labelStyle: {
     type: String,
     required: false,
-    default: "static",
+    default: "absolute",
   },
   error: {
     type: String,
@@ -58,69 +56,3 @@ const props = defineProps({
 const focused = ref(null);
 
 </script>
-
-<style lang="scss">
-.form-field {
-  position: relative;
-  margin-bottom: 1.9rem;
-
-  &.error {
-    input,
-    textarea {
-      border: 2px solid $red;
-    }
-  }
-
-  input,
-  textarea {
-    background: white;
-    padding: 15px;
-    width: 100%;
-    border-radius: 0;
-    color: $black;
-  }
-
-  textarea {
-    resize: none;
-    min-height: 200px;
-  }
-
-  &.has-value {
-    label.absolute,
-    &.textarea label.absolute {
-      opacity: 0;
-    }
-  }
-
-  &.textarea label.absolute {
-    top: 15px;
-    transform: none;
-  }
-
-  label {
-    &.static {
-      display: block;
-      margin-bottom: 10px;
-    }
-    &.absolute {
-      background: white;
-      transition: 0.25s ease;
-      pointer-events: none;
-      touch-action: none;
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      left: 15px;
-      z-index: 2;
-      color: $black;
-    }
-  }
-
-  .error {
-    @extend .paragraph-small;
-    position: absolute;
-    top: 100%;
-    left: 0;
-  }
-}
-</style>

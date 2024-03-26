@@ -1,50 +1,36 @@
 <template>
   <div
     class="form-field select-container"
-    :class="{ 'has-value': !!modelValue }"
+    :class="{ 'has-value': modelValue !== '0'}"
   >
     <label :for="name" class="sr-only">{{ label }}</label>
     <select
       ref="select"
       @change="$emit('update:modelValue', $event.target.value)"
       :id="name"
-      :name="name"
       :aria-describedby="error ? name + '-error' : null"
       :aria-required="required ? true : false.toString()"
       :aria-invalid="error ? true : null"
     >
+      <option v-if="placeholder" value="0" disabled>{{ placeholder }}</option>
       <option
         v-for="option in options"
-        :disabled="option.disabled"
         :value="option.value"
         :key="option.value"
-        :selected="option.name === modelValue || option.value === modelValue"
         :title="option.name"
+        :aria-selected="option.value === modelValue ? true : null"
       >
         {{ option.name }}
       </option>
     </select>
-    <div class="arrow">
-      <svg
-        focusable="false"
-        width="14"
-        height="8"
-        viewBox="0 0 14 8"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          d="M12.0313 1.12793L7.02138 6.12793L1.66992 1.12793"
-          stroke-width="2"
-          stroke-linecap="round"
-        />
-      </svg>
-    </div>
+    <SvgsSelectArrow class="arrow" />
   </div>
 </template>
 
 
 <script setup>
+const emit = defineEmits(['update:modelValue'])
+
 const props = defineProps({
   modelValue: {
     type: [String, Number],
@@ -61,6 +47,11 @@ const props = defineProps({
     type: String,
     required: true,
   },
+  labelStyle: {
+    type: String,
+    required: false,
+    default: "static",
+  },
   error: {
     type: String,
     required: false,
@@ -69,14 +60,37 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  placeholder: {
+    type: [String, Boolean],
+    required: false,
+    default: false
+  }
 });
-</script>
+
+const { modelValue, options, placeholder } = toRefs(props)
+
+onMounted(() => {
+  if (!placeholder.value) updateValue(options.value[0].value)
+  else updateValue("0")
+})
+</script>  
 
 <style lang="scss">
-.form-field {
-  select {
-    background: $white;
-    color: $black;
+.select-container {
+  &.form-field {
+    select {
+      background: $white;
+      color: $black;
+    }
+
+    .arrow {
+      position: absolute;
+      right: 5px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+    }
   }
 }
+
 </style>

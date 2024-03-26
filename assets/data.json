@@ -2,11 +2,12 @@
     {
         "type": "Popup"
     },
-    {
-        "type": "Marquee"
-    },
+
     {
         "type": "SearchOverlay"
+    },
+    {
+        "type": "Marquee"
     },
     {
         "type": "Accordion",

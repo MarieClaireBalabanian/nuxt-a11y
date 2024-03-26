@@ -42,16 +42,16 @@
             autocomplete="email"
             required
           />
-
-          <!-- <FragmentsFormsInput
-              v-model="formInputs.message.val"
-              :label="formInputs.message.label"
-              labelStyle="absolute"
-              :error="formInputs.message.errors"
-              name="message"
-              inputType="textarea"
-              required
-            /> -->
+            <FragmentsFormsSelect
+            v-model="formInputs.state.val"
+            :label="formInputs.state.label"
+            :error="formInputs.state.errors"
+            :options="stateOptions"
+            labelStyle="absolute"
+            name="state"
+            placeholder="Select a State"
+            required
+          />
           <FragmentsFormsTextarea
               v-model="formInputs.message.val"
               :label="formInputs.message.label"
@@ -61,14 +61,7 @@
               inputType="textarea"
               required
             />
-          <FragmentsFormsSelect
-            v-model="formInputs.state.val"
-            :label="formInputs.state.label"
-            :error="formInputs.state.errors"
-            :options="stateOptions"
-            name="state"
-            required
-          />
+          
         </div>
 
         <div class="actions text-center">
@@ -138,9 +131,10 @@ const success = ref(false);
 const successMessageRef = ref(null);
 
 const stateOptions = [
-  { name: "", value: "" },
   { name: "Washington", value: "WA" },
   { name: "Illinois", value: "IL" },
+  { name: "Georgia", value: "GA" },
+  { name: "Kentucky", value: "KY" },
 ];
 
 const validateForm = () => {

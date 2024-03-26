@@ -1,5 +1,5 @@
 <template>
-  <section ref="blockRef" :class="{ paused: paused || isReduced }">
+  <section ref="blockRef" :class="[ { paused: paused || isReduced }, 'bg-black text-white' ]">
     <button
       v-if="!isReduced"
       class="sr-only sr-only-focusable"

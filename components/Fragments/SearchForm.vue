@@ -22,7 +22,7 @@
           class="search icon"
           @click.prevent="toggleSearch"
           :class="{ 'open': searchOpen }"
-          :aria-label="searchOpen ? 'Hide Search Form' : 'Show Search Form'""
+          :aria-label="searchOpen ? 'Hide Search Form' : 'Show Search Form'"
         >
           <SvgsSearch v-show="!searchOpen" />
           <SvgsX v-show="searchOpen" />
